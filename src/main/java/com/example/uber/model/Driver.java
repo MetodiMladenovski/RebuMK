@@ -4,6 +4,7 @@ import com.example.uber.model.enums.DriverLevel;
 import com.example.uber.model.enums.DriverStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.With;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "driver")
 @Getter
+@Setter
 @AllArgsConstructor
 public class Driver {
 
@@ -58,13 +60,9 @@ public class Driver {
     private float grade;
 
     @ManyToOne
-    @JoinColumn(name = "passenger_id")
-    private Passenger adminId;
+    @JoinColumn(name = "admin_id")
+    private Admin adminId;
 
-    public Driver(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-        this.id = UUID.randomUUID();
-    }
     public Driver() {
     }
 }

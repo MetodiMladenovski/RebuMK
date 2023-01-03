@@ -72,6 +72,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>8.5.13</version>
+				<configuration>
+					<user>postgres</user>
+					<password>mete5</password>
+					<schemas>
+						<schema>rebumk</schema>
+					</schemas>
+				</configuration>
+			</plugin>
 		</plugins>
 
 

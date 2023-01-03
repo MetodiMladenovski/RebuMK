@@ -2,6 +2,7 @@ package com.example.uber.service.impl;
 
 import com.example.uber.model.Driver;
 import com.example.uber.model.Passenger;
+import com.example.uber.model.enums.Role;
 import com.example.uber.model.request.DriverRegisterRequest;
 import com.example.uber.model.request.PassengerRegisterRequest;
 import com.example.uber.repository.DriverRepository;
@@ -25,14 +26,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerPassenger(PassengerRegisterRequest passengerRequest) {
         Passenger passenger = modelMapper.map(passengerRequest, Passenger.class);
-        passengerRepository.save(passenger);
+        Passenger passengerWithEncryptedPassword = passenger.withEncryptedPassword(this.encodePassword(passengerRequest.getPassword()));
+        passengerRepository.save(passengerWithEncryptedPassword);
     }
 
     @Override
     public void registerDriver(DriverRegisterRequest driverRequest) {
-        Driver driver = new Driver(encodePassword(driverRequest.getPassword()));
-        modelMapper.map(driverRequest, driver);
-        driverRepository.save(driver);
+        Driver driver = modelMapper.map(driverRequest, Driver.class);
+        Driver driverWithEncryptedPassword = driver.withEncryptedPassword(this.encodePassword(driverRequest.getPassword()));
+        driverRepository.save(driverWithEncryptedPassword);
     }
 
     private String encodePassword(String password){

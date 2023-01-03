@@ -1,6 +1,5 @@
 package com.example.uber.model;
 
-import com.example.uber.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +9,13 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "passenger")
+@Table(name = "admin_table")
 @Getter
-@Setter
 @AllArgsConstructor
-public class Passenger {
-
+public class Admin {
     @Id
     @GeneratedValue
-    @Column(name = "passenger_id")
+    @Column(name = "admin_id")
     private UUID id;
 
     @Column(name="email")
@@ -34,7 +31,7 @@ public class Passenger {
     @Column(name="surname")
     private String surname;
 
-    public Passenger() {
+    public Admin() {
     }
 
 }

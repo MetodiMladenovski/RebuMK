@@ -8,10 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class UberApplication {
+public class RebuApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UberApplication.class, args);
+		SpringApplication.run(RebuApplication.class, args);
 	}
 
 	@Bean

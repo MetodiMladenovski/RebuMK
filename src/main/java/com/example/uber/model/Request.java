@@ -1,7 +1,10 @@
 package com.example.uber.model;
 
 import com.example.uber.model.enums.RequestStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.With;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -9,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "request")
 @Getter
+@Setter
+@AllArgsConstructor
 public class Request {
 
     @Id
@@ -17,6 +22,7 @@ public class Request {
     private UUID id;
 
     @Column(name = "status")
+    @With
     private RequestStatus status;
 
     @Column(name = "city_address")
@@ -49,14 +55,4 @@ public class Request {
     public Request() {
     }
 
-    public Request(RequestStatus status, String cityAddress, String streetAddress, int numberAddress, float latitude, float longitude, Passenger passengerId, Driver chosenDriverId) {
-        this.status = status;
-        this.cityAddress = cityAddress;
-        this.streetAddress = streetAddress;
-        this.numberAddress = numberAddress;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.passengerId = passengerId;
-        this.chosenDriverId = chosenDriverId;
-    }
 }

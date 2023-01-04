@@ -44,6 +44,7 @@ public class Driver {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @With
     private DriverStatus status;
 
     @Column(name = "is_approved")

@@ -1,7 +1,9 @@
 package com.example.uber.model;
 
 import com.example.uber.model.enums.DriveStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "drive")
 @Getter
+@Setter
+@AllArgsConstructor
 public class Drive {
 
     @Id

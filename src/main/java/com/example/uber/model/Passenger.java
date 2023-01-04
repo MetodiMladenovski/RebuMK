@@ -1,6 +1,5 @@
 package com.example.uber.model;
 
-import com.example.uber.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

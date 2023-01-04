@@ -1,6 +1,9 @@
 package com.example.uber.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.With;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -9,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "car")
 @Getter
+@Setter
+@AllArgsConstructor
 public class Car {
 
     @Id
@@ -33,13 +38,5 @@ public class Car {
     private Driver driverId;
 
     public Car() {
-    }
-
-    public Car(String licensePlate, String make, int year, String model, Driver driverId) {
-        this.licensePlate = licensePlate;
-        this.make = make;
-        this.year = year;
-        this.model = model;
-        this.driverId = driverId;
     }
 }

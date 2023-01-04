@@ -1,4 +1,12 @@
 package com.example.uber.service;
 
+import com.example.uber.model.Driver;
+import com.example.uber.model.enums.DriverStatus;
+
+import java.util.UUID;
+
 public interface DriverService {
+    void changeStatusForDriver(UUID driverId, DriverStatus status);
+
+    Driver findDriverById(UUID driverId);
 }

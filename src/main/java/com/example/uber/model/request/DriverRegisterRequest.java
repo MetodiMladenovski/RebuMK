@@ -12,6 +12,5 @@ public class DriverRegisterRequest {
     private String password;
     private String name;
     private String surname;
-    private byte[] profilePicture;
     private float pricePerKm;
 }

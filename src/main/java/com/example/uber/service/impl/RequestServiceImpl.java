@@ -1,6 +1,7 @@
 package com.example.uber.service.impl;
 
 import com.example.uber.model.Driver;
+import com.example.uber.model.Passenger;
 import com.example.uber.model.Request;
 import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.enums.RequestStatus;
@@ -8,6 +9,7 @@ import com.example.uber.model.request.RequestDriveRequest;
 import com.example.uber.model.response.RequestDriveResponse;
 import com.example.uber.repository.RequestRepository;
 import com.example.uber.service.DriverService;
+import com.example.uber.service.PassengerService;
 import com.example.uber.service.RequestService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,20 +25,35 @@ public class RequestServiceImpl  implements RequestService {
 
     private final RequestRepository requestRepository;
     private final DriverService driverService;
+    private final PassengerService passengerService;
     private final ModelMapper modelMapper;
 
     @Override
-    public RequestDriveResponse makeRequest(RequestDriveRequest request) {
-        Request requestDrive = modelMapper.map(request, Request.class).withStatus(RequestStatus.CREATED);
+    public RequestDriveResponse makeRequestForAllDrivers(UUID passengerId, RequestDriveRequest request) {
+        Passenger passenger = passengerService.findById(passengerId);
+        Request requestDrive = modelMapper.map(request, Request.class).withStatus(RequestStatus.CREATED).withPassenger(passenger);
+        Request savedRequest = requestRepository.save(requestDrive);
+        return modelMapper.map(savedRequest, RequestDriveResponse.class);
+    }
+
+    @Override
+    public RequestDriveResponse makeRequestForSpecificDriver(UUID passengerId, UUID chosenDriverId, RequestDriveRequest request) {
+        Passenger passenger = passengerService.findById(passengerId);
+        Driver chosenDriver = driverService.findDriverById(chosenDriverId);
+        Request requestDrive = modelMapper.map(request, Request.class)
+                .withStatus(RequestStatus.CREATED)
+                .withPassenger(passenger)
+                .withChosenDriver(chosenDriver);
         Request savedRequest = requestRepository.save(requestDrive);
         return modelMapper.map(savedRequest, RequestDriveResponse.class);
     }
 
     @Override
     public List<RequestDriveResponse> getAllCreatedRequests(UUID driverId) {
-        List<Request> requests = requestRepository.findAllByStatus(RequestStatus.CREATED);
+        List<Request> requests = requestRepository.findAll();
         return requests.stream()
-                .filter(request -> request.getChosenDriverId().getId().equals(driverId) || request.getChosenDriverId()==null)
+                .filter(request -> (request.getChosenDriver().getId().equals(driverId) || request.getChosenDriver()==null)
+                        && request.getStatus().equals(RequestStatus.CREATED))
                 .map(request -> modelMapper.map(request, RequestDriveResponse.class))
                 .collect(Collectors.toList());
     }
@@ -45,8 +62,13 @@ public class RequestServiceImpl  implements RequestService {
     public void confirmRequest(UUID driverId, UUID requestToConfirmId) {
         Request request = requestRepository.findById(requestToConfirmId).orElseThrow(IllegalAccessError::new);
         Driver driver = driverService.findDriverById(driverId);
-        requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriverId(driver));
+        requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriver(driver));
         driverService.changeStatusForDriver(driverId, DriverStatus.BUSY);
+    }
+
+    @Override
+    public Request findById(UUID requestId) {
+        return requestRepository.findById(requestId).orElseThrow(IllegalAccessError::new);
     }
 
 }

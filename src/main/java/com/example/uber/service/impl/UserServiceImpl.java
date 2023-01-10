@@ -3,6 +3,8 @@ package com.example.uber.service.impl;
 import com.example.uber.model.Admin;
 import com.example.uber.model.Driver;
 import com.example.uber.model.Passenger;
+import com.example.uber.model.enums.DriverLevel;
+import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.enums.Role;
 import com.example.uber.model.request.DriverRegisterRequest;
 import com.example.uber.model.request.LoginRequest;
@@ -44,7 +46,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException();
         }
         Driver driver = modelMapper.map(driverRequest, Driver.class);
-        Driver driverWithEncryptedPassword = driver.withEncryptedPassword(this.encodePassword(driverRequest.getPassword()));
+        Driver driverWithEncryptedPassword = driver.withLevel(DriverLevel.BEGINNER)
+                .withStatus(DriverStatus.NOT_WORKING)
+                .withEncryptedPassword(this.encodePassword(driverRequest.getPassword()));
         driverRepository.save(driverWithEncryptedPassword);
     }
 

@@ -7,4 +7,8 @@ import java.util.UUID;
 
 public interface CarService {
     Car addCarForDriver(CarRequest carRequest, UUID driverId);
+
+    Car findCarByDriverId(UUID driverId);
+
+    Car findCarById(UUID carId);
 }

@@ -34,8 +34,9 @@ public class Car {
     private String model;
 
     @OneToOne
-    @JoinColumn(name = "id", nullable = false)
-    private Driver driverId;
+    @JoinColumn(name = "driver_id", nullable = false)
+    @With
+    private Driver driver;
 
     public Car() {
     }

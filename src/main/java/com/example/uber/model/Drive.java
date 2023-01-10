@@ -4,9 +4,11 @@ import com.example.uber.model.enums.DriveStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.With;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -33,33 +35,40 @@ public class Drive {
     @Column(name = "end_time")
     private Timestamp endTime;
 
+    @Column(name = "destination_latitude")
+    private float destinationLatitude;
+
+    @Column(name = "destination_longitude")
+    private float destinationLongitude;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @With
     private DriveStatus status;
 
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)
-    private Passenger carId;
+    private Car car;
 
     @ManyToOne
     @JoinColumn(name = "driver_id", nullable = false)
-    private Driver driverId;
+    private Driver driver;
 
     @OneToOne
     @JoinColumn(name = "request_id", nullable = false)
-    private Request requestId;
+    private Request request;
 
     public Drive() {
     }
 
-    public Drive(float grade, float kmTravelled, Timestamp startTime, Timestamp endTime, DriveStatus status, Passenger carId, Driver driverId, Request requestId) {
-        this.grade = grade;
-        this.kmTravelled = kmTravelled;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.carId = carId;
-        this.driverId = driverId;
-        this.requestId = requestId;
+    public Drive(Car car, Driver driver, Request request, float destinationLatitude, float destinationLongitude) {
+        this.kmTravelled = (float) 0.0;
+        this.startTime = Timestamp.valueOf(LocalDateTime.now());
+        this.status = DriveStatus.STARTED;
+        this.car = car;
+        this.driver = driver;
+        this.request = request;
+        this.destinationLatitude = destinationLatitude;
+        this.destinationLongitude = destinationLongitude;
     }
 }

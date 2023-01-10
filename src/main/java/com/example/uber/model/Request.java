@@ -42,16 +42,18 @@ public class Request {
 
     @ManyToOne
     @JoinColumn(name = "passenger_id")
-    private Passenger passengerId;
-
-    @ManyToOne
-    @JoinColumn(name = "driver_id", updatable = false, insertable = false)
-    private Driver chosenDriverId;
+    @With
+    private Passenger passenger;
 
     @ManyToOne
     @JoinColumn(name = "driver_id", updatable = false, insertable = false)
     @With
-    private Driver confirmedByDriverId;
+    private Driver chosenDriver;
+
+    @ManyToOne
+    @JoinColumn(name = "driver_id", updatable = false, insertable = false)
+    @With
+    private Driver confirmedByDriver;
 
     public Request() {
     }

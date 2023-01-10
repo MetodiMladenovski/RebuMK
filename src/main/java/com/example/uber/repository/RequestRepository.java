@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RequestRepository extends JpaRepository<Request, UUID> {
-    List<Request> findAllByStatus(RequestStatus requestStatus);
+
 }

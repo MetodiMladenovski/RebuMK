@@ -24,16 +24,16 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "drive_id", nullable = false)
-    private Drive driveId;
+    private Drive drive;
 
     @ManyToOne
     @JoinColumn(name = "passenger_id")
-    private Passenger passengerId;
+    private Passenger passenger;
 
-    public Payment(float totalSumPayed, Drive driveId, Passenger passengerId) {
+    public Payment(float totalSumPayed, Drive drive, Passenger passenger) {
         this.totalSumPayed = totalSumPayed;
-        this.driveId = driveId;
-        this.passengerId = passengerId;
+        this.drive = drive;
+        this.passenger = passenger;
     }
 
     public Payment() {

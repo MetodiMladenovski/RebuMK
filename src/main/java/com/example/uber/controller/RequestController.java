@@ -4,9 +4,11 @@ import com.example.uber.model.request.RequestDriveRequest;
 import com.example.uber.model.response.RequestDriveResponse;
 import com.example.uber.service.RequestService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,9 +17,19 @@ import java.util.UUID;
 public class RequestController {
     private RequestService requestService;
 
-    @PostMapping("/make")
-    public ResponseEntity<RequestDriveResponse> makeRequest(@RequestBody RequestDriveRequest requestDriveRequest){
-        return ResponseEntity.ok(requestService.makeRequest(requestDriveRequest));
+    @PostMapping("/make/{passengerId}")
+    public ResponseEntity<RequestDriveResponse> makeRequest(@PathVariable String passengerId,
+                                                            @RequestParam String chosenDriverId,
+                                                            @RequestBody RequestDriveRequest requestDriveRequest){
+        UUID passengerUuid = UUID.fromString(passengerId);
+        RequestDriveResponse response;
+        if(chosenDriverId != null){
+            UUID chosenDriverUuid = UUID.fromString(chosenDriverId);
+            response = requestService.makeRequestForSpecificDriver(passengerUuid, chosenDriverUuid, requestDriveRequest);
+        } else {
+            response = requestService.makeRequestForAllDrivers(passengerUuid, requestDriveRequest);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/confirm/{driverId}/{requestId}")
@@ -26,5 +38,11 @@ public class RequestController {
         UUID requestUUID = UUID.fromString(requestId);
         requestService.confirmRequest(driverUUID, requestUUID);
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/{driverId}")
+    public ResponseEntity<List<RequestDriveResponse>> getAllRequests(@PathVariable String driverId){
+        UUID driverUuid = UUID.fromString(driverId);
+        return ResponseEntity.ok(requestService.getAllCreatedRequests(driverUuid));
     }
 }

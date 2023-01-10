@@ -1,5 +1,7 @@
 package com.example.uber.model.response;
 
+import com.example.uber.model.Driver;
+import com.example.uber.model.Passenger;
 import com.example.uber.model.enums.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +22,7 @@ public class RequestDriveResponse {
     private int numberAddress;
     private float latitude;
     private float longitude;
-    private String passengerId;
-    private String chosenDriverId;
-    private String confirmedByDriverId;
+    private Passenger passenger;
+    private Driver chosenDriver;
+    private Driver confirmedByDriver;
 }

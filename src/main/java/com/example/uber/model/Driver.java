@@ -2,10 +2,8 @@ package com.example.uber.model;
 
 import com.example.uber.model.enums.DriverLevel;
 import com.example.uber.model.enums.DriverStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.With;
+import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -15,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Driver {
 
     @Id
@@ -29,13 +28,13 @@ public class Driver {
     @With
     private String encryptedPassword;
 
-    @Column(name = "name")
+    @Column(name = "first_name")
     private String name;
 
     @Column(name = "surname")
     private String surname;
 
-    @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "profile_picture")
     private byte[] profilePicture;
 
@@ -53,6 +52,7 @@ public class Driver {
 
     @Column(name = "driver_level")
     @Enumerated(EnumType.STRING)
+    @With
     private DriverLevel level;
 
     @Column(name = "num_grades")
@@ -63,8 +63,6 @@ public class Driver {
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private Admin adminId;
+    private Admin admin;
 
-    public Driver() {
-    }
 }

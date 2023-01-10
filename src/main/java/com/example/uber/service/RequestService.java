@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface RequestService {
     RequestDriveResponse makeRequest(RequestDriveRequest request);
-    List<RequestDriveResponse> getAllCreatedRequests();
+    List<RequestDriveResponse> getAllCreatedRequests(UUID driverId);
 
     void confirmRequest(UUID driverId, UUID requestToConfirmId);
 }

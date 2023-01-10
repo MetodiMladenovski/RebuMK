@@ -27,7 +27,7 @@ public class Passenger {
     @With
     private String encryptedPassword;
 
-    @Column(name="name")
+    @Column(name="first_name")
     private String name;
 
     @Column(name="surname")

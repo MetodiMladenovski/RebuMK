@@ -1,5 +1,6 @@
 package com.example.uber.service.impl;
 
+import com.example.uber.model.Driver;
 import com.example.uber.model.Request;
 import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.enums.RequestStatus;
@@ -10,9 +11,7 @@ import com.example.uber.service.DriverService;
 import com.example.uber.service.RequestService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,15 +33,19 @@ public class RequestServiceImpl  implements RequestService {
     }
 
     @Override
-    public List<RequestDriveResponse> getAllCreatedRequests() {
+    public List<RequestDriveResponse> getAllCreatedRequests(UUID driverId) {
         List<Request> requests = requestRepository.findAllByStatus(RequestStatus.CREATED);
-        return requests.stream().map(request -> modelMapper.map(request, RequestDriveResponse.class)).collect(Collectors.toList());
+        return requests.stream()
+                .filter(request -> request.getChosenDriverId().getId().equals(driverId) || request.getChosenDriverId()==null)
+                .map(request -> modelMapper.map(request, RequestDriveResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void confirmRequest(UUID driverId, UUID requestToConfirmId) {
         Request request = requestRepository.findById(requestToConfirmId).orElseThrow(IllegalAccessError::new);
-        requestRepository.save(request.withStatus(RequestStatus.CONFIRMED));
+        Driver driver = driverService.findDriverById(driverId);
+        requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriverId(driver));
         driverService.changeStatusForDriver(driverId, DriverStatus.BUSY);
     }
 

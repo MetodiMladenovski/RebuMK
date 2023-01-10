@@ -1,10 +1,13 @@
 package com.example.uber.service.impl;
 
+import com.example.uber.model.Admin;
 import com.example.uber.model.Driver;
 import com.example.uber.model.Passenger;
 import com.example.uber.model.enums.Role;
 import com.example.uber.model.request.DriverRegisterRequest;
+import com.example.uber.model.request.LoginRequest;
 import com.example.uber.model.request.PassengerRegisterRequest;
+import com.example.uber.repository.AdminRepository;
 import com.example.uber.repository.DriverRepository;
 import com.example.uber.repository.PassengerRepository;
 import com.example.uber.service.UserService;
@@ -23,8 +26,13 @@ public class UserServiceImpl implements UserService {
     private final DriverRepository driverRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final AdminRepository adminRepository;
+
     @Override
     public void registerPassenger(PassengerRegisterRequest passengerRequest) {
+        if(passengerRepository.existsByEmail(passengerRequest.getEmail())){
+            throw new IllegalStateException();
+        }
         Passenger passenger = modelMapper.map(passengerRequest, Passenger.class);
         Passenger passengerWithEncryptedPassword = passenger.withEncryptedPassword(this.encodePassword(passengerRequest.getPassword()));
         passengerRepository.save(passengerWithEncryptedPassword);
@@ -32,9 +40,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerDriver(DriverRegisterRequest driverRequest) {
+        if(driverRepository.existsByEmail(driverRequest.getEmail())){
+            throw new IllegalStateException();
+        }
         Driver driver = modelMapper.map(driverRequest, Driver.class);
         Driver driverWithEncryptedPassword = driver.withEncryptedPassword(this.encodePassword(driverRequest.getPassword()));
         driverRepository.save(driverWithEncryptedPassword);
+    }
+
+    @Override
+    public Boolean login(LoginRequest loginRequest) {
+        boolean login = false;
+        if(driverRepository.existsByEmail(loginRequest.getEmail())){
+            Driver driver = driverRepository.findByEmail(loginRequest.getEmail());
+            if(passwordEncoder.matches(loginRequest.getPassword(), driver.getEncryptedPassword())){
+                    login = true;
+            }
+        } else if(passengerRepository.existsByEmail(loginRequest.getEmail())){
+            Passenger passenger = passengerRepository.findByEmail(loginRequest.getEmail());
+            if(passwordEncoder.matches(loginRequest.getPassword(), passenger.getEncryptedPassword())){
+                login = true;
+            }
+        } else if (adminRepository.existsByEmail(loginRequest.getEmail())){
+            Admin admin = adminRepository.findByEmail(loginRequest.getEmail());
+            if(passwordEncoder.matches(loginRequest.getPassword(), admin.getEncryptedPassword())){
+                login = true;
+            }
+        }
+        return login;
     }
 
     private String encodePassword(String password){

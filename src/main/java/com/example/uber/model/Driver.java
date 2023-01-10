@@ -48,6 +48,7 @@ public class Driver {
     private DriverStatus status;
 
     @Column(name = "is_approved")
+    @With
     private boolean isApproved;
 
     @Column(name = "driver_level")

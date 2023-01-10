@@ -50,6 +50,7 @@ public class Request {
 
     @ManyToOne
     @JoinColumn(name = "driver_id", updatable = false, insertable = false)
+    @With
     private Driver confirmedByDriverId;
 
     public Request() {

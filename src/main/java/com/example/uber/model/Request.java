@@ -23,6 +23,7 @@ public class Request {
 
     @Column(name = "status")
     @With
+    @Enumerated(EnumType.STRING)
     private RequestStatus status;
 
     @Column(name = "city_address")
@@ -46,12 +47,12 @@ public class Request {
     private Passenger passenger;
 
     @ManyToOne
-    @JoinColumn(name = "driver_id", updatable = false, insertable = false)
+    @JoinColumn(name = "chosen_driver_id")
     @With
     private Driver chosenDriver;
 
     @ManyToOne
-    @JoinColumn(name = "driver_id", updatable = false, insertable = false)
+    @JoinColumn(name = "confirmed_by_driver_id")
     @With
     private Driver confirmedByDriver;
 

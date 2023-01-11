@@ -41,9 +41,9 @@ public class RequestServiceImpl  implements RequestService {
         Passenger passenger = passengerService.findById(passengerId);
         Driver chosenDriver = driverService.findDriverById(chosenDriverId);
         Request requestDrive = modelMapper.map(request, Request.class)
-                .withStatus(RequestStatus.CREATED)
                 .withPassenger(passenger)
-                .withChosenDriver(chosenDriver);
+                .withChosenDriver(chosenDriver)
+                .withStatus(RequestStatus.CREATED);
         Request savedRequest = requestRepository.save(requestDrive);
         return modelMapper.map(savedRequest, RequestDriveResponse.class);
     }
@@ -52,7 +52,7 @@ public class RequestServiceImpl  implements RequestService {
     public List<RequestDriveResponse> getAllCreatedRequests(UUID driverId) {
         List<Request> requests = requestRepository.findAll();
         return requests.stream()
-                .filter(request -> (request.getChosenDriver().getId().equals(driverId) || request.getChosenDriver()==null)
+                .filter(request -> (request.getChosenDriver()==null || request.getChosenDriver().getId().equals(driverId))
                         && request.getStatus().equals(RequestStatus.CREATED))
                 .map(request -> modelMapper.map(request, RequestDriveResponse.class))
                 .collect(Collectors.toList());

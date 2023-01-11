@@ -4,7 +4,6 @@ import com.example.uber.model.request.RequestDriveRequest;
 import com.example.uber.model.response.RequestDriveResponse;
 import com.example.uber.service.RequestService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +18,11 @@ public class RequestController {
 
     @PostMapping("/make/{passengerId}")
     public ResponseEntity<RequestDriveResponse> makeRequest(@PathVariable String passengerId,
-                                                            @RequestParam String chosenDriverId,
                                                             @RequestBody RequestDriveRequest requestDriveRequest){
         UUID passengerUuid = UUID.fromString(passengerId);
         RequestDriveResponse response;
-        if(chosenDriverId != null){
-            UUID chosenDriverUuid = UUID.fromString(chosenDriverId);
+        if(requestDriveRequest.getChosenDriverId() != null){
+            UUID chosenDriverUuid = UUID.fromString(requestDriveRequest.getChosenDriverId());
             response = requestService.makeRequestForSpecificDriver(passengerUuid, chosenDriverUuid, requestDriveRequest);
         } else {
             response = requestService.makeRequestForAllDrivers(passengerUuid, requestDriveRequest);

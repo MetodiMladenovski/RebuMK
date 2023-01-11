@@ -13,4 +13,5 @@ public class RequestDriveRequest {
     private int numberAddress;
     private float latitude;
     private float longitude;
+    private String chosenDriverId;
 }

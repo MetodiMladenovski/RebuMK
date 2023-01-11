@@ -34,7 +34,7 @@ public class Driver {
     @Column(name = "surname")
     private String surname;
 
-    @Type(type="org.hibernate.type.BinaryType")
+    @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "profile_picture")
     private byte[] profilePicture;
 

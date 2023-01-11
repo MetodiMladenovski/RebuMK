@@ -1,7 +1,10 @@
 package com.example.uber.model.response;
 
 import com.example.uber.model.enums.DriveStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.UUID;

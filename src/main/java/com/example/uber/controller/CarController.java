@@ -16,7 +16,7 @@ public class CarController {
     private final CarService carService;
 
     @PostMapping("/add/{driverId}")
-    public ResponseEntity<Car> addCarForDriver(@RequestBody CarRequest carRequest, @PathVariable String driverId){
+    public ResponseEntity<Car> addCarForDriver(@RequestBody CarRequest carRequest, @PathVariable String driverId) {
         UUID driverUUID = UUID.fromString(driverId);
         Car savedCar = carService.addCarForDriver(carRequest, driverUUID);
         return ResponseEntity.ok(savedCar);

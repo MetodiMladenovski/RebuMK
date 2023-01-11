@@ -18,6 +18,7 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final ModelMapper modelMapper;
     private final DriverService driverService;
+
     @Override
     public Car addCarForDriver(CarRequest carRequest, UUID driverId) {
         Car car = modelMapper.map(carRequest, Car.class);

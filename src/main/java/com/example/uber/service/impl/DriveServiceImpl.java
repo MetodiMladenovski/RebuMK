@@ -15,7 +15,6 @@ import com.example.uber.service.RequestService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.UUID;
 

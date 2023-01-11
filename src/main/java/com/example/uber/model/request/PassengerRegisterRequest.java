@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PassengerRegisterRequest {
     private String email;
-
     private String password;
-
     private String name;
-
     private String surname;
 }

@@ -1,6 +1,5 @@
 package com.example.uber.model.response;
 
-import com.example.uber.model.Admin;
 import com.example.uber.model.enums.DriverLevel;
 import com.example.uber.model.enums.DriverStatus;
 import lombok.AllArgsConstructor;

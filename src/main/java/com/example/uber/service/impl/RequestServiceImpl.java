@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class RequestServiceImpl  implements RequestService {
+public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
     private final DriverService driverService;
@@ -52,7 +52,7 @@ public class RequestServiceImpl  implements RequestService {
     public List<RequestDriveResponse> getAllCreatedRequests(UUID driverId) {
         List<Request> requests = requestRepository.findAll();
         return requests.stream()
-                .filter(request -> (request.getChosenDriver()==null || request.getChosenDriver().getId().equals(driverId))
+                .filter(request -> (request.getChosenDriver() == null || request.getChosenDriver().getId().equals(driverId))
                         && request.getStatus().equals(RequestStatus.CREATED))
                 .map(request -> modelMapper.map(request, RequestDriveResponse.class))
                 .collect(Collectors.toList());

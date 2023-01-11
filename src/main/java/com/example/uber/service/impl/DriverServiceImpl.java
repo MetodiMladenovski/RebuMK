@@ -2,24 +2,20 @@ package com.example.uber.service.impl;
 
 import com.example.uber.model.Driver;
 import com.example.uber.model.enums.DriverStatus;
-import com.example.uber.model.response.DriverResponse;
 import com.example.uber.repository.DriverRepository;
 import com.example.uber.service.DriverService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.management.InstanceNotFoundException;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
 
-    public void changeStatusForDriver(UUID driverId, DriverStatus status){
+    public void changeStatusForDriver(UUID driverId, DriverStatus status) {
         Driver driver = driverRepository.findById(driverId).orElseThrow(IllegalAccessError::new);
         Driver driverWithChangedStatus = driver.withStatus(status);
         driverRepository.save(driverWithChangedStatus);

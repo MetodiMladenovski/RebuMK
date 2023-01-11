@@ -2,7 +2,6 @@ package com.example.uber.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.With;
 
 import javax.persistence.*;
@@ -18,17 +17,17 @@ public class Admin {
     @Column(name = "admin_id")
     private UUID id;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="encrypted_password")
+    @Column(name = "encrypted_password")
     @With
     private String encryptedPassword;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String name;
 
-    @Column(name="surname")
+    @Column(name = "surname")
     private String surname;
 
     public Admin() {

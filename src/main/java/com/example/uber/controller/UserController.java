@@ -17,19 +17,19 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register/passenger")
-    public ResponseEntity<Boolean> registerPassenger(@RequestBody PassengerRegisterRequest passenger){
+    public ResponseEntity<Boolean> registerPassenger(@RequestBody PassengerRegisterRequest passenger) {
         userService.registerPassenger(passenger);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/register/driver")
-    public ResponseEntity<Boolean> registerDriver(@RequestBody DriverRegisterRequest driver){
+    public ResponseEntity<Boolean> registerDriver(@RequestBody DriverRegisterRequest driver) {
         userService.registerDriver(driver);
         return ResponseEntity.ok(true);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Boolean> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.login(loginRequest));
     }
 }

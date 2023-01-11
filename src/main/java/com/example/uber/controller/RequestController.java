@@ -18,10 +18,10 @@ public class RequestController {
 
     @PostMapping("/make/{passengerId}")
     public ResponseEntity<RequestDriveResponse> makeRequest(@PathVariable String passengerId,
-                                                            @RequestBody RequestDriveRequest requestDriveRequest){
+                                                            @RequestBody RequestDriveRequest requestDriveRequest) {
         UUID passengerUuid = UUID.fromString(passengerId);
         RequestDriveResponse response;
-        if(requestDriveRequest.getChosenDriverId() != null){
+        if (requestDriveRequest.getChosenDriverId() != null) {
             UUID chosenDriverUuid = UUID.fromString(requestDriveRequest.getChosenDriverId());
             response = requestService.makeRequestForSpecificDriver(passengerUuid, chosenDriverUuid, requestDriveRequest);
         } else {
@@ -31,7 +31,7 @@ public class RequestController {
     }
 
     @PostMapping("/confirm/{driverId}/{requestId}")
-    public ResponseEntity<Boolean> confirmRequest(@PathVariable String driverId, @PathVariable String requestId){
+    public ResponseEntity<Boolean> confirmRequest(@PathVariable String driverId, @PathVariable String requestId) {
         UUID driverUUID = UUID.fromString(driverId);
         UUID requestUUID = UUID.fromString(requestId);
         requestService.confirmRequest(driverUUID, requestUUID);
@@ -39,7 +39,7 @@ public class RequestController {
     }
 
     @GetMapping("/{driverId}")
-    public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable String driverId){
+    public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
         return ResponseEntity.ok(requestService.getAllCreatedRequests(driverUuid));
     }

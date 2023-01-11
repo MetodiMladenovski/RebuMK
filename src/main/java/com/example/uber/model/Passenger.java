@@ -20,17 +20,17 @@ public class Passenger {
     @Column(name = "passenger_id")
     private UUID id;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="encrypted_password")
+    @Column(name = "encrypted_password")
     @With
     private String encryptedPassword;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String name;
 
-    @Column(name="surname")
+    @Column(name = "surname")
     private String surname;
 
     public Passenger() {

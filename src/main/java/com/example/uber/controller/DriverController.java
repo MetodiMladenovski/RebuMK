@@ -22,13 +22,13 @@ public class DriverController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<DriverResponse>> findAllDrivers(){
+    public ResponseEntity<List<DriverResponse>> findAllDrivers() {
         return ResponseEntity.ok(driverService.findAll().stream()
                 .map(driver -> modelMapper.map(driver, DriverResponse.class)).collect(Collectors.toList()));
     }
 
     @GetMapping("/{driverId}")
-    public ResponseEntity<DriverResponse> findDriverById(@PathVariable String driverId){
+    public ResponseEntity<DriverResponse> findDriverById(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
         Driver driver = driverService.findDriverById(driverUuid);
         DriverResponse driverResponse = modelMapper.map(driver, DriverResponse.class);
@@ -36,7 +36,7 @@ public class DriverController {
     }
 
     @PostMapping("/approve/{driverId}")
-    public ResponseEntity<Boolean> approveDriverAccount(@PathVariable String driverId){
+    public ResponseEntity<Boolean> approveDriverAccount(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
         return ResponseEntity.ok(driverService.approveAccount(driverUuid));
     }

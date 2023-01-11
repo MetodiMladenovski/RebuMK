@@ -5,7 +5,6 @@ import com.example.uber.model.Driver;
 import com.example.uber.model.Passenger;
 import com.example.uber.model.enums.DriverLevel;
 import com.example.uber.model.enums.DriverStatus;
-import com.example.uber.model.enums.Role;
 import com.example.uber.model.request.DriverRegisterRequest;
 import com.example.uber.model.request.LoginRequest;
 import com.example.uber.model.request.PassengerRegisterRequest;

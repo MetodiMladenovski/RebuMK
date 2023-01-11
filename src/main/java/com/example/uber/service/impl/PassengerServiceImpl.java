@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
+
     @Override
     public Passenger findById(UUID passengerId) {
         return passengerRepository.findById(passengerId).orElseThrow(IllegalAccessError::new);

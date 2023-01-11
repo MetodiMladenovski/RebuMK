@@ -21,4 +21,6 @@ public class CarController {
         Car savedCar = carService.addCarForDriver(carRequest, driverUUID);
         return ResponseEntity.ok(savedCar);
     }
+//
+//    @GetMapping("/driver/{driverId}")
 }

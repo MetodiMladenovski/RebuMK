@@ -1,6 +1,5 @@
 package com.example.uber.controller;
 
-import com.example.uber.model.Drive;
 import com.example.uber.model.request.DriveRequest;
 import com.example.uber.model.response.DriveResponse;
 import com.example.uber.service.DriveService;

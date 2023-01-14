@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/driver")
 @AllArgsConstructor
+@CrossOrigin("http://localhost:3000/")
 public class DriverController {
 
     private final DriverService driverService;
@@ -24,6 +25,12 @@ public class DriverController {
     @GetMapping
     public ResponseEntity<List<DriverResponse>> findAllDrivers() {
         return ResponseEntity.ok(driverService.findAll().stream()
+                .map(driver -> modelMapper.map(driver, DriverResponse.class)).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/unapproved")
+    public ResponseEntity<List<DriverResponse>> findAllUnapprovedDrivers() {
+        return ResponseEntity.ok(driverService.findAllUnapprovedDrivers().stream()
                 .map(driver -> modelMapper.map(driver, DriverResponse.class)).collect(Collectors.toList()));
     }
 

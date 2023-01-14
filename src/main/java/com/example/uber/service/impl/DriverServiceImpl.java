@@ -37,4 +37,9 @@ public class DriverServiceImpl implements DriverService {
         driverRepository.save(driver);
         return true;
     }
+
+    @Override
+    public List<Driver> findAllUnapprovedDrivers() {
+        return driverRepository.findAllByIsApproved(false);
+    }
 }

@@ -52,25 +52,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean login(LoginRequest loginRequest) {
-        boolean login = false;
+    public String login(LoginRequest loginRequest) {
+        String loggedUser = "false";
         if(driverRepository.existsByEmail(loginRequest.getEmail())){
             Driver driver = driverRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), driver.getEncryptedPassword())){
-                    login = true;
+                loggedUser = "Driver";
             }
         } else if(passengerRepository.existsByEmail(loginRequest.getEmail())){
             Passenger passenger = passengerRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), passenger.getEncryptedPassword())){
-                login = true;
+                loggedUser = "Passenger";
             }
         } else if (adminRepository.existsByEmail(loginRequest.getEmail())){
             Admin admin = adminRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), admin.getEncryptedPassword())){
-                login = true;
+                loggedUser = "Admin";
             }
         }
-        return login;
+        return loggedUser;
     }
 
     private String encodePassword(String password){

@@ -12,6 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/car")
 @AllArgsConstructor
+@CrossOrigin("http://localhost:3000/")
 public class CarController {
     private final CarService carService;
 

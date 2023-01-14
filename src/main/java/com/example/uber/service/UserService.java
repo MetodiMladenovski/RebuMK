@@ -9,5 +9,5 @@ public interface UserService {
     void registerPassenger(PassengerRegisterRequest passengerRequest);
     void registerDriver(DriverRegisterRequest driverRequest);
 
-    Boolean login(LoginRequest loginRequest);
+    String login(LoginRequest loginRequest);
 }

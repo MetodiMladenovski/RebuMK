@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/public")
 @AllArgsConstructor
+@CrossOrigin(value = "http://localhost:3000/",methods = {RequestMethod.GET, RequestMethod.POST})
 public class UserController {
 
     private final UserService userService;
@@ -28,8 +29,8 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.login(loginRequest));
     }
 }

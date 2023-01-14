@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/request")
 @AllArgsConstructor
+@CrossOrigin("http://localhost:3000/")
 public class RequestController {
     private RequestService requestService;
 

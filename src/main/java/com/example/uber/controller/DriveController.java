@@ -12,6 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/drive")
 @AllArgsConstructor
+@CrossOrigin("http://localhost:3000/")
 public class DriveController {
 
     private final DriveService driveService;

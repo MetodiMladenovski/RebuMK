@@ -8,6 +8,7 @@ import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.request.DriverRegisterRequest;
 import com.example.uber.model.request.LoginRequest;
 import com.example.uber.model.request.PassengerRegisterRequest;
+import com.example.uber.model.response.LoginResponse;
 import com.example.uber.repository.AdminRepository;
 import com.example.uber.repository.DriverRepository;
 import com.example.uber.repository.PassengerRepository;
@@ -16,6 +17,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service
@@ -52,25 +55,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
-        String loggedUser = "false";
+    public LoginResponse login(LoginRequest loginRequest) {
+        String typeOfLoggedUser = "false";
+        String loggedUserId = "empty";
         if(driverRepository.existsByEmail(loginRequest.getEmail())){
             Driver driver = driverRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), driver.getEncryptedPassword())){
-                loggedUser = "Driver";
+                typeOfLoggedUser = "Driver";
+                loggedUserId = driver.getId().toString();
             }
         } else if(passengerRepository.existsByEmail(loginRequest.getEmail())){
             Passenger passenger = passengerRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), passenger.getEncryptedPassword())){
-                loggedUser = "Passenger";
+                typeOfLoggedUser = "Passenger";
+                loggedUserId = passenger.getId().toString();
             }
         } else if (adminRepository.existsByEmail(loginRequest.getEmail())){
             Admin admin = adminRepository.findByEmail(loginRequest.getEmail());
             if(passwordEncoder.matches(loginRequest.getPassword(), admin.getEncryptedPassword())){
-                loggedUser = "Admin";
+                typeOfLoggedUser = "Admin";
+                loggedUserId = admin.getId().toString();
             }
         }
-        return loggedUser;
+        return new LoginResponse(typeOfLoggedUser, loggedUserId);
     }
 
     private String encodePassword(String password){

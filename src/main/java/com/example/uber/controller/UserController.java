@@ -4,6 +4,7 @@ package com.example.uber.controller;
 import com.example.uber.model.request.DriverRegisterRequest;
 import com.example.uber.model.request.LoginRequest;
 import com.example.uber.model.request.PassengerRegisterRequest;
+import com.example.uber.model.response.LoginResponse;
 import com.example.uber.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.login(loginRequest));
     }
 }

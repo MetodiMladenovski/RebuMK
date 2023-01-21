@@ -1,6 +1,7 @@
 package com.example.uber.service;
 
 import com.example.uber.model.Request;
+import com.example.uber.model.enums.RequestStatus;
 import com.example.uber.model.request.RequestDriveRequest;
 import com.example.uber.model.response.RequestDriveResponse;
 
@@ -12,7 +13,11 @@ public interface RequestService {
     RequestDriveResponse makeRequestForSpecificDriver(UUID passengerId, UUID chosenDriverId,RequestDriveRequest request);
     List<RequestDriveResponse> getAllCreatedRequests(UUID driverId);
 
-    void confirmRequest(UUID driverId, UUID requestToConfirmId);
+    RequestDriveResponse confirmRequest(UUID driverId, UUID requestToConfirmId);
 
     Request findById(UUID requestId);
+
+    RequestDriveResponse getRequestById(UUID requestUuid);
+
+    void updateStatus (UUID requestId, RequestStatus status);
 }

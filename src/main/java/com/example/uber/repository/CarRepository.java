@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CarRepository extends JpaRepository<Car, UUID> {
-    Optional<Car> findByDriver(UUID driverId);
+    Optional<Car> findByDriverId(UUID driverId);
 }

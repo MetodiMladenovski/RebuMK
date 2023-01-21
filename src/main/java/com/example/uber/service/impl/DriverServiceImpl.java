@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<Driver> findAll() {
-        return driverRepository.findAll();
+        return driverRepository.findAll().stream().filter(Driver::isApproved).collect(Collectors.toList());
     }
 
     @Override

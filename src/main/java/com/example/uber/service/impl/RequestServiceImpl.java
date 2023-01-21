@@ -59,16 +59,33 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void confirmRequest(UUID driverId, UUID requestToConfirmId) {
+    public RequestDriveResponse confirmRequest(UUID driverId, UUID requestToConfirmId) {
         Request request = requestRepository.findById(requestToConfirmId).orElseThrow(IllegalAccessError::new);
         Driver driver = driverService.findDriverById(driverId);
-        requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriver(driver));
+        Request savedRequest = requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriver(driver));
         driverService.changeStatusForDriver(driverId, DriverStatus.BUSY);
+        RequestDriveResponse requestDriveResponse = modelMapper.map(savedRequest, RequestDriveResponse.class);
+        return requestDriveResponse;
+    }
+
+    @Override
+    public RequestDriveResponse getRequestById(UUID requestUuid) {
+        Request request = findById(requestUuid);
+        return modelMapper.map(request, RequestDriveResponse.class);
+    }
+
+    @Override
+    public void updateStatus(UUID requestId, RequestStatus status) {
+        Request request = findById(requestId);
+        requestRepository.save(request.withStatus(status));
     }
 
     @Override
     public Request findById(UUID requestId) {
         return requestRepository.findById(requestId).orElseThrow(IllegalAccessError::new);
     }
+
+
+
 
 }

@@ -5,6 +5,7 @@ import com.example.uber.model.Drive;
 import com.example.uber.model.Driver;
 import com.example.uber.model.Request;
 import com.example.uber.model.enums.DriveStatus;
+import com.example.uber.model.enums.RequestStatus;
 import com.example.uber.model.request.DriveRequest;
 import com.example.uber.model.response.DriveResponse;
 import com.example.uber.repository.DriveRepository;
@@ -41,6 +42,7 @@ public class DriveServiceImpl implements DriveService {
     @Override
     public Boolean finishDrive(UUID driveId) {
         Drive drive = findById(driveId);
+        requestService.updateStatus(drive.getRequest().getId(), RequestStatus.FINISHED);
         driveRepository.save(drive.withStatus(DriveStatus.FINISHED));
         return true;
     }
@@ -48,5 +50,11 @@ public class DriveServiceImpl implements DriveService {
     @Override
     public Drive findById(UUID driveId) {
         return driveRepository.findById(driveId).orElseThrow(IllegalAccessError::new);
+    }
+
+    @Override
+    public DriveResponse getDriveByRequestId(UUID requestUuid) {
+        Drive drive = driveRepository.findByRequestId(requestUuid).orElseThrow(IllegalAccessError::new);
+        return modelMapper.map(drive, DriveResponse.class);
     }
 }

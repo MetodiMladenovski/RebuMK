@@ -29,4 +29,10 @@ public class DriveController {
         UUID driveUuid = UUID.fromString(driveId);
         return ResponseEntity.ok(driveService.finishDrive(driveUuid));
     }
+
+    @GetMapping("/request/{requestId}")
+    public ResponseEntity<DriveResponse> getDriveByRequestId(@PathVariable String requestId) {
+        UUID requestUuid = UUID.fromString(requestId);
+        return ResponseEntity.ok(driveService.getDriveByRequestId(requestUuid));
+    }
 }

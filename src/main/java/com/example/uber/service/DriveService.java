@@ -14,4 +14,6 @@ public interface DriveService {
     Boolean finishDrive(UUID driveId);
 
     Drive findById(UUID driveId);
+
+    DriveResponse getDriveByRequestId(UUID requestUuid);
 }

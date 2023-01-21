@@ -29,7 +29,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car findCarByDriverId(UUID driverId) {
-        return carRepository.findByDriver(driverId).orElseThrow(IllegalAccessError::new);
+        return carRepository.findByDriverId(driverId).orElseThrow(IllegalAccessError::new);
     }
 
     @Override

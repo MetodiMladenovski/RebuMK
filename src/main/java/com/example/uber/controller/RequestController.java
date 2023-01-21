@@ -32,16 +32,22 @@ public class RequestController {
     }
 
     @PostMapping("/confirm/{driverId}/{requestId}")
-    public ResponseEntity<Boolean> confirmRequest(@PathVariable String driverId, @PathVariable String requestId) {
+    public ResponseEntity<RequestDriveResponse> confirmRequest(@PathVariable String driverId, @PathVariable String requestId) {
         UUID driverUUID = UUID.fromString(driverId);
         UUID requestUUID = UUID.fromString(requestId);
-        requestService.confirmRequest(driverUUID, requestUUID);
-        return ResponseEntity.ok(true);
+        RequestDriveResponse requestDriveResponse = requestService.confirmRequest(driverUUID, requestUUID);
+        return ResponseEntity.ok(requestDriveResponse);
     }
 
-    @GetMapping("/{driverId}")
+    @GetMapping("/driver/{driverId}")
     public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
         return ResponseEntity.ok(requestService.getAllCreatedRequests(driverUuid));
+    }
+
+    @GetMapping("/{requestId}")
+    public ResponseEntity<RequestDriveResponse> getRequestById(@PathVariable String requestId) {
+        UUID requestUuid = UUID.fromString(requestId);
+        return ResponseEntity.ok(requestService.getRequestById(requestUuid));
     }
 }

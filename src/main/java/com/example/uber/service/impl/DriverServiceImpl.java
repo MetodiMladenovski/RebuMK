@@ -28,7 +28,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public List<Driver> findAll() {
+    public List<Driver> findAllApprovedDrivers() {
         return driverRepository.findAll().stream().filter(Driver::isApproved).collect(Collectors.toList());
     }
 

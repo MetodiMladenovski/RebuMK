@@ -3,7 +3,6 @@ package com.example.uber.service;
 import com.example.uber.model.Driver;
 import com.example.uber.model.enums.DriverStatus;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ public interface DriverService {
 
     Driver findDriverById(UUID driverId);
 
-    List<Driver> findAll();
+    List<Driver> findAllApprovedDrivers();
 
     Boolean approveAccount(UUID driverId);
 

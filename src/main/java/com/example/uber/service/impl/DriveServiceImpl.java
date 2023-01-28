@@ -1,18 +1,12 @@
 package com.example.uber.service.impl;
 
-import com.example.uber.model.Car;
-import com.example.uber.model.Drive;
-import com.example.uber.model.Driver;
-import com.example.uber.model.Request;
+import com.example.uber.model.*;
 import com.example.uber.model.enums.DriveStatus;
 import com.example.uber.model.enums.RequestStatus;
 import com.example.uber.model.request.DriveRequest;
 import com.example.uber.model.response.DriveResponse;
 import com.example.uber.repository.DriveRepository;
-import com.example.uber.service.CarService;
-import com.example.uber.service.DriveService;
-import com.example.uber.service.DriverService;
-import com.example.uber.service.RequestService;
+import com.example.uber.service.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,6 +20,8 @@ public class DriveServiceImpl implements DriveService {
     private final CarService carService;
     private final DriverService driverService;
     private final RequestService requestService;
+    private final PaymentService paymentService;
+    private final PassengerService passengerService;
     private final DriveRepository driveRepository;
     private final ModelMapper modelMapper;
 
@@ -40,10 +36,10 @@ public class DriveServiceImpl implements DriveService {
     }
 
     @Override
-    public Boolean finishDrive(UUID driveId) {
+    public Boolean finishDrive(UUID driveId, float kmTravelled) {
         Drive drive = findById(driveId);
         requestService.updateStatus(drive.getRequest().getId(), RequestStatus.FINISHED);
-        driveRepository.save(drive.withStatus(DriveStatus.FINISHED));
+        driveRepository.save(drive.withStatus(DriveStatus.FINISHED).withKmTravelled(kmTravelled));
         return true;
     }
 
@@ -56,5 +52,23 @@ public class DriveServiceImpl implements DriveService {
     public DriveResponse getDriveByRequestId(UUID requestUuid) {
         Drive drive = driveRepository.findByRequestId(requestUuid).orElseThrow(IllegalAccessError::new);
         return modelMapper.map(drive, DriveResponse.class);
+    }
+
+    @Override
+    public DriveResponse gradeDrive(UUID driveUuid, float grade) {
+        Drive drive = findById(driveUuid);
+        Drive gradedDrive = drive.withGrade(grade);
+        driverService.updateGradeForDriver(gradedDrive.getDriver().getId(), grade);
+        driveRepository.save(gradedDrive);
+        return modelMapper.map(gradedDrive, DriveResponse.class);
+    }
+
+    @Override
+    public Boolean payDrive(UUID driveUuid, float totalPriceToPay) {
+        Drive drive = findById(driveUuid);
+        UUID passengerId = drive.getRequest().getPassenger().getId();
+        Passenger passenger = passengerService.findById(passengerId);
+        paymentService.addPayment(drive, passenger, totalPriceToPay);
+        return true;
     }
 }

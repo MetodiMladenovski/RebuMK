@@ -33,4 +33,9 @@ public class Admin {
     public Admin() {
     }
 
+    public Admin(String email, String name, String surname) {
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+    }
 }

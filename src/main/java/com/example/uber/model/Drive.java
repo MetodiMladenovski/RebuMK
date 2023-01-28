@@ -24,9 +24,11 @@ public class Drive {
     private UUID id;
 
     @Column(name = "grade")
+    @With
     private float grade;
 
     @Column(name = "km_travelled")
+    @With
     private float kmTravelled;
 
     @Column(name = "start_time")

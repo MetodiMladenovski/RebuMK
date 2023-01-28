@@ -16,4 +16,8 @@ public interface DriverService {
     Boolean approveAccount(UUID driverId);
 
     List<Driver> findAllUnapprovedDrivers();
+
+    Driver save(Driver driver);
+
+    void updateGradeForDriver(UUID driverId, float grade);
 }

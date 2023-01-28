@@ -29,7 +29,9 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<Driver> findAllApprovedDrivers() {
-        return driverRepository.findAll().stream().filter(Driver::isApproved).collect(Collectors.toList());
+        return driverRepository.findAll().stream()
+                .filter(Driver::isApproved)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -42,5 +44,17 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public List<Driver> findAllUnapprovedDrivers() {
         return driverRepository.findAllByIsApproved(false);
+    }
+
+    @Override
+    public Driver save(Driver driver) {
+        return driverRepository.save(driver);
+    }
+
+    @Override
+    public void updateGradeForDriver(UUID driverId, float grade) {
+        Driver driver = findDriverById(driverId);
+        driver.updateGrade(grade);
+        driverRepository.save(driver);
     }
 }

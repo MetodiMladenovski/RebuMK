@@ -18,8 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 
 @Service
 @AllArgsConstructor
@@ -78,6 +76,13 @@ public class UserServiceImpl implements UserService {
             }
         }
         return new LoginResponse(typeOfLoggedUser, loggedUserId);
+    }
+
+    @Override
+    public void registerAdmin(PassengerRegisterRequest adminRequest) {
+        Admin adminToSave = new Admin(adminRequest.getEmail(), adminRequest.getName(), adminRequest.getSurname());
+        Admin adminWithEncryptedPassword = adminToSave.withEncryptedPassword(this.encodePassword(adminRequest.getPassword()));
+        adminRepository.save(adminWithEncryptedPassword);
     }
 
     private String encodePassword(String password){

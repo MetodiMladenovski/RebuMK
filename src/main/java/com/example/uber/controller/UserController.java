@@ -30,6 +30,12 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<Boolean> registerAdmin(@RequestBody PassengerRegisterRequest admin) {
+        userService.registerAdmin(admin);
+        return ResponseEntity.ok(true);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.login(loginRequest));

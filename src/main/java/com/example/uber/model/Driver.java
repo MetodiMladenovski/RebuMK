@@ -59,10 +59,19 @@ public class Driver {
     private int numGrades;
 
     @Column(name = "grade")
+    @With
     private float grade;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
+    public void updateGrade(float grade){
+        this.grade = (this.grade + grade) / 2;
+        this.numGrades++;
+    }
+
+    public Boolean checkIfNumberOfGradesMoreThanFive(){
+        return this.numGrades >= 5;
+    }
 }

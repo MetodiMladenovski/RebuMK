@@ -32,7 +32,6 @@ public class DriveServiceImpl implements DriveService {
         Driver driver = driverService.findDriverById(driverUuid);
         Request request = requestService.findById(requestUuid);
         Drive drive = new Drive(car, driver, request, driveRequest.getDestinationLatitude(), driveRequest.getDestinationLongitude());
-        requestService.updateStatus(request.getId(), RequestStatus.FINISHED);
         driveRepository.save(drive);
         return modelMapper.map(drive, DriveResponse.class);
     }
@@ -40,6 +39,7 @@ public class DriveServiceImpl implements DriveService {
     @Override
     public Boolean finishDrive(UUID driveId, float kmTravelled) {
         Drive drive = findById(driveId);
+        requestService.updateStatus(drive.getRequest().getId(), RequestStatus.FINISHED);
         driverService.changeStatusForDriver(drive.getDriver().getId(), DriverStatus.AVAILABLE);
         driveRepository.save(drive.withStatus(DriveStatus.FINISHED).withKmTravelled(kmTravelled));
         return true;

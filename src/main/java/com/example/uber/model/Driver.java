@@ -67,8 +67,8 @@ public class Driver {
     private Admin admin;
 
     public void updateGrade(float grade){
-        this.grade = (this.grade + grade) / 2;
         this.numGrades++;
+        this.grade = (this.grade + grade) / this.numGrades;
     }
 
     public Boolean checkIfNumberOfGradesMoreThanFive(){

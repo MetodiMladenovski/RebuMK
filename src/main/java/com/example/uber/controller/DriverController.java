@@ -23,8 +23,8 @@ public class DriverController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<DriverResponse>> findAllApprovedDrivers() {
-        return ResponseEntity.ok(driverService.findAllApprovedDrivers().stream()
+    public ResponseEntity<List<DriverResponse>> findAllApprovedAndAvailableDrivers() {
+        return ResponseEntity.ok(driverService.findAllApprovedAndAvailableDrivers().stream()
                 .map(driver -> modelMapper.map(driver, DriverResponse.class)).collect(Collectors.toList()));
     }
 

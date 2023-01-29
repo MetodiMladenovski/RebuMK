@@ -16,21 +16,15 @@ import java.util.stream.Collectors;
 public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
 
-    public void changeStatusForDriver(UUID driverId, DriverStatus status) {
-        Driver driver = driverRepository.findById(driverId).orElseThrow(IllegalAccessError::new);
-        Driver driverWithChangedStatus = driver.withStatus(status);
-        driverRepository.save(driverWithChangedStatus);
-    }
-
     @Override
     public Driver findDriverById(UUID driverId) {
         return driverRepository.findById(driverId).orElseThrow(IllegalAccessError::new);
     }
 
     @Override
-    public List<Driver> findAllApprovedDrivers() {
+    public List<Driver> findAllApprovedAndAvailableDrivers() {
         return driverRepository.findAll().stream()
-                .filter(Driver::isApproved)
+                .filter(driver -> driver.getStatus().equals(DriverStatus.AVAILABLE) && driver.isApproved())
                 .collect(Collectors.toList());
     }
 
@@ -56,5 +50,11 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = findDriverById(driverId);
         driver.updateGrade(grade);
         driverRepository.save(driver);
+    }
+
+    public void changeStatusForDriver(UUID driverId, DriverStatus status) {
+        Driver driver = driverRepository.findById(driverId).orElseThrow(IllegalAccessError::new);
+        Driver driverWithChangedStatus = driver.withStatus(status);
+        driverRepository.save(driverWithChangedStatus);
     }
 }

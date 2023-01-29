@@ -2,5 +2,5 @@ package com.example.uber.model.enums;
 
 
 public enum DriveStatus {
-    STARTED, FINISHED
+    STARTED, FINISHED, PAYED
 }

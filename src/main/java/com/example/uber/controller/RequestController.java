@@ -42,7 +42,8 @@ public class RequestController {
     @GetMapping("/driver/{driverId}")
     public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
-        return ResponseEntity.ok(requestService.getAllCreatedRequests(driverUuid));
+        List<RequestDriveResponse> allCreatedRequests = requestService.getAllCreatedRequests(driverUuid);
+        return ResponseEntity.ok(allCreatedRequests);
     }
 
     @GetMapping("/{requestId}")

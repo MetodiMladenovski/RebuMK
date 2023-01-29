@@ -11,7 +11,7 @@ public interface DriverService {
 
     Driver findDriverById(UUID driverId);
 
-    List<Driver> findAllApprovedDrivers();
+    List<Driver> findAllApprovedAndAvailableDrivers();
 
     Boolean approveAccount(UUID driverId);
 

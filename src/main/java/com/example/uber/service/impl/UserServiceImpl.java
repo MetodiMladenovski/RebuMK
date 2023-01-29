@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         }
         Driver driver = modelMapper.map(driverRequest, Driver.class);
         Driver driverWithEncryptedPassword = driver.withLevel(DriverLevel.BEGINNER)
-                .withStatus(DriverStatus.NOT_WORKING)
+                .withStatus(DriverStatus.AVAILABLE)
                 .withEncryptedPassword(this.encodePassword(driverRequest.getPassword()));
         driverRepository.save(driverWithEncryptedPassword);
     }

@@ -5,9 +5,14 @@ import com.example.uber.model.response.DriverResponse;
 import com.example.uber.service.DriverService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,5 +51,24 @@ public class DriverController {
     public ResponseEntity<Boolean> approveDriverAccount(@PathVariable String driverId) {
         UUID driverUuid = UUID.fromString(driverId);
         return ResponseEntity.ok(driverService.approveAccount(driverUuid));
+    }
+
+    @PostMapping(path = "/{driverId}/profile/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<DriverResponse> changeProfileImage(@PathVariable String driverId, @RequestPart("picture") MultipartFile picture) {
+        UUID driverUuid = UUID.fromString(driverId);
+        return ResponseEntity.ok(driverService.changeProfilePicture(driverUuid, picture));
+    }
+
+    @GetMapping("/{driverId}/profile/picture")
+    public ResponseEntity<Resource> getProfileImage(@PathVariable String driverId) throws IOException {
+        // Load the image from a file
+        UUID driverUuid = UUID.fromString(driverId);
+        Resource resource = driverService.getProfilePicture(driverUuid);
+        // Set the content type and length headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
     }
 }

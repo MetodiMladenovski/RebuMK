@@ -36,6 +36,7 @@ public class Driver {
 
     @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "profile_picture")
+    @With
     private byte[] profilePicture;
 
     @Column(name = "price_per_km")

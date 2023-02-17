@@ -18,7 +18,6 @@ public class DriverResponse {
     private String email;
     private String name;
     private String surname;
-    private byte[] profilePicture;
     private float pricePerKm;
     private DriverStatus status;
     private DriverLevel level;

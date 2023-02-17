@@ -2,11 +2,19 @@ package com.example.uber.service.impl;
 
 import com.example.uber.model.Driver;
 import com.example.uber.model.enums.DriverStatus;
+import com.example.uber.model.response.DriverResponse;
 import com.example.uber.repository.DriverRepository;
 import com.example.uber.service.DriverService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,6 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Driver findDriverById(UUID driverId) {
@@ -50,6 +59,28 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = findDriverById(driverId);
         driver.updateGrade(grade);
         driverRepository.save(driver);
+    }
+
+    @Override
+    public DriverResponse changeProfilePicture(UUID driverUuid, MultipartFile picture) {
+        Driver driver = findDriverById(driverUuid);
+        try {
+            Driver driverWithPicture = driver.withProfilePicture(picture.getBytes());
+            driverRepository.save(driverWithPicture);
+            return modelMapper.map(driverWithPicture, DriverResponse.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Resource getProfilePicture(UUID driverId) {
+        Driver driver = findDriverById(driverId);
+        if(driver.getProfilePicture()==null){
+            throw new IllegalArgumentException();
+        }
+        byte[] profilePictureBytes = driver.getProfilePicture();
+        return new ByteArrayResource(profilePictureBytes);
     }
 
     public void changeStatusForDriver(UUID driverId, DriverStatus status) {

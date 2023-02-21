@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -66,7 +67,10 @@ public class DriveServiceImpl implements DriveService {
     public DriveResponse gradeDrive(UUID driveUuid, float grade) {
         Drive drive = findById(driveUuid);
         Drive gradedDrive = drive.withGrade(grade);
-        List<Drive> drivesForDriver = getAllDrivesByDriverId(drive.getDriver().getId());
+        List<Drive> drivesForDriver = getAllDrivesByDriverId(drive.getDriver().getId())
+                .stream()
+                .filter(drive1 -> drive1.getGrade() != 0.0)
+                .collect(Collectors.toList());
         driverService.updateGradeForDriver(gradedDrive.getDriver().getId(), grade, drivesForDriver);
         driveRepository.save(gradedDrive);
         return modelMapper.map(gradedDrive, DriveResponse.class);

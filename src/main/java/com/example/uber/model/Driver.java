@@ -6,7 +6,10 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BinaryOperator;
 
 @Entity
 @Table(name = "driver")
@@ -67,12 +70,9 @@ public class Driver {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    public void updateGrade(float grade){
+    public void updateGrade(List<Float> oldGrades, float newGrade){
         this.numGrades++;
-        this.grade = (this.grade + grade) / this.numGrades;
-    }
-
-    public Boolean checkIfNumberOfGradesMoreThanFive(){
-        return this.numGrades >= 5;
+        float sumOldGrades = oldGrades.stream().reduce((float) 0, Float::sum);
+        this.grade = (sumOldGrades + grade) / this.numGrades;
     }
 }

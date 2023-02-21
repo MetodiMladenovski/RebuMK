@@ -1,5 +1,6 @@
 package com.example.uber.service;
 
+import com.example.uber.model.Drive;
 import com.example.uber.model.Driver;
 import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.response.DriverResponse;
@@ -23,7 +24,7 @@ public interface DriverService {
 
     Driver save(Driver driver);
 
-    void updateGradeForDriver(UUID driverId, float grade);
+    void updateGradeForDriver(UUID driverId, float grade, List<Drive> drives);
 
     DriverResponse changeProfilePicture(UUID driverUuid, MultipartFile picture);
 

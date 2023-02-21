@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -55,12 +56,18 @@ public class DriveServiceImpl implements DriveService {
         Drive drive = driveRepository.findByRequestId(requestUuid).orElseThrow(IllegalAccessError::new);
         return modelMapper.map(drive, DriveResponse.class);
     }
+    @Override
+    public List<Drive> getAllDrivesByDriverId(UUID driverId) {
+        List<Drive> drivesForDriver = driveRepository.findAllByDriverId(driverId).orElseThrow(IllegalAccessError::new);
+        return drivesForDriver;
+    }
 
     @Override
     public DriveResponse gradeDrive(UUID driveUuid, float grade) {
         Drive drive = findById(driveUuid);
         Drive gradedDrive = drive.withGrade(grade);
-        driverService.updateGradeForDriver(gradedDrive.getDriver().getId(), grade);
+        List<Drive> drivesForDriver = getAllDrivesByDriverId(drive.getDriver().getId());
+        driverService.updateGradeForDriver(gradedDrive.getDriver().getId(), grade, drivesForDriver);
         driveRepository.save(gradedDrive);
         return modelMapper.map(gradedDrive, DriveResponse.class);
     }

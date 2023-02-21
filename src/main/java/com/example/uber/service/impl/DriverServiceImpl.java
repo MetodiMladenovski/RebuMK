@@ -1,5 +1,6 @@
 package com.example.uber.service.impl;
 
+import com.example.uber.model.Drive;
 import com.example.uber.model.Driver;
 import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.response.DriverResponse;
@@ -55,9 +56,10 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public void updateGradeForDriver(UUID driverId, float grade) {
+    public void updateGradeForDriver(UUID driverId, float grade, List<Drive> drives) {
         Driver driver = findDriverById(driverId);
-        driver.updateGrade(grade);
+        List<Float> gradesForDriver = drives.stream().map(Drive::getGrade).collect(Collectors.toList());
+        driver.updateGrade(gradesForDriver, grade);
         driverRepository.save(driver);
     }
 

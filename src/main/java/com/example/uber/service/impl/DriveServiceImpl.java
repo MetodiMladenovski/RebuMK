@@ -33,6 +33,9 @@ public class DriveServiceImpl implements DriveService {
         Car car = carService.findCarByDriverId(driverUuid);
         Driver driver = driverService.findDriverById(driverUuid);
         Request request = requestService.findById(requestUuid);
+        if(driveRepository.existsByRequestId(requestUuid)){
+            throw new IllegalArgumentException();
+        }
         Drive drive = new Drive(car, driver, request, driveRequest.getDestinationLatitude(), driveRequest.getDestinationLongitude());
         driveRepository.save(drive);
         return modelMapper.map(drive, DriveResponse.class);

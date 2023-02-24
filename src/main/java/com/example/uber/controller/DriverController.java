@@ -61,10 +61,8 @@ public class DriverController {
 
     @GetMapping("/{driverId}/profile/picture")
     public ResponseEntity<Resource> getProfileImage(@PathVariable String driverId) throws IOException {
-        // Load the image from a file
         UUID driverUuid = UUID.fromString(driverId);
         Resource resource = driverService.getProfilePicture(driverUuid);
-        // Set the content type and length headers
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg");
         return ResponseEntity.ok()

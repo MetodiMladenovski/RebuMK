@@ -11,4 +11,6 @@ public interface DriveRepository extends JpaRepository<Drive, UUID> {
     Optional<Drive> findByRequestId(UUID requestId);
 
     Optional<List<Drive>> findAllByDriverId(UUID driverId);
+
+    Boolean existsByRequestId(UUID requestId);
 }

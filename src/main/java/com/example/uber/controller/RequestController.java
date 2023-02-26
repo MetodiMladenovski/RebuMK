@@ -18,37 +18,32 @@ public class RequestController {
     private RequestService requestService;
 
     @PostMapping("/make/{passengerId}")
-    public ResponseEntity<RequestDriveResponse> makeRequest(@PathVariable String passengerId,
+    public ResponseEntity<RequestDriveResponse> makeRequest(@PathVariable UUID passengerId,
                                                             @RequestBody RequestDriveRequest requestDriveRequest) {
-        UUID passengerUuid = UUID.fromString(passengerId);
         RequestDriveResponse response;
         if (requestDriveRequest.getChosenDriverId() != null) {
             UUID chosenDriverUuid = UUID.fromString(requestDriveRequest.getChosenDriverId());
-            response = requestService.makeRequestForSpecificDriver(passengerUuid, chosenDriverUuid, requestDriveRequest);
+            response = requestService.makeRequestForSpecificDriver(passengerId, chosenDriverUuid, requestDriveRequest);
         } else {
-            response = requestService.makeRequestForAllDrivers(passengerUuid, requestDriveRequest);
+            response = requestService.makeRequestForAllDrivers(passengerId, requestDriveRequest);
         }
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/confirm/{driverId}/{requestId}")
-    public ResponseEntity<RequestDriveResponse> confirmRequest(@PathVariable String driverId, @PathVariable String requestId) {
-        UUID driverUUID = UUID.fromString(driverId);
-        UUID requestUUID = UUID.fromString(requestId);
-        RequestDriveResponse requestDriveResponse = requestService.confirmRequest(driverUUID, requestUUID);
+    public ResponseEntity<RequestDriveResponse> confirmRequest(@PathVariable UUID driverId, @PathVariable UUID requestId) {
+        RequestDriveResponse requestDriveResponse = requestService.confirmRequest(driverId, requestId);
         return ResponseEntity.ok(requestDriveResponse);
     }
 
     @GetMapping("/driver/{driverId}")
-    public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable String driverId) {
-        UUID driverUuid = UUID.fromString(driverId);
-        List<RequestDriveResponse> allCreatedRequests = requestService.getAllCreatedRequests(driverUuid);
+    public ResponseEntity<List<RequestDriveResponse>> getAllCreatedRequests(@PathVariable UUID driverId) {
+        List<RequestDriveResponse> allCreatedRequests = requestService.getAllCreatedRequests(driverId);
         return ResponseEntity.ok(allCreatedRequests);
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<RequestDriveResponse> getRequestById(@PathVariable String requestId) {
-        UUID requestUuid = UUID.fromString(requestId);
-        return ResponseEntity.ok(requestService.getRequestById(requestUuid));
+    public ResponseEntity<RequestDriveResponse> getRequestById(@PathVariable UUID requestId) {
+        return ResponseEntity.ok(requestService.getRequestById(requestId));
     }
 }

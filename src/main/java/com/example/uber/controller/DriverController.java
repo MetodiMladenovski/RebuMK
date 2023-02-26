@@ -40,29 +40,25 @@ public class DriverController {
     }
 
     @GetMapping("/{driverId}")
-    public ResponseEntity<DriverResponse> findDriverById(@PathVariable String driverId) {
-        UUID driverUuid = UUID.fromString(driverId);
-        Driver driver = driverService.findDriverById(driverUuid);
+    public ResponseEntity<DriverResponse> findDriverById(@PathVariable UUID driverId) {
+        Driver driver = driverService.findDriverById(driverId);
         DriverResponse driverResponse = modelMapper.map(driver, DriverResponse.class);
         return ResponseEntity.ok(driverResponse);
     }
 
     @PostMapping("/approve/{driverId}")
-    public ResponseEntity<Boolean> approveDriverAccount(@PathVariable String driverId) {
-        UUID driverUuid = UUID.fromString(driverId);
-        return ResponseEntity.ok(driverService.approveAccount(driverUuid));
+    public ResponseEntity<Boolean> approveDriverAccount(@PathVariable UUID driverId) {
+        return ResponseEntity.ok(driverService.approveAccount(driverId));
     }
 
     @PostMapping(path = "/{driverId}/profile/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DriverResponse> changeProfileImage(@PathVariable String driverId, @RequestPart("picture") MultipartFile picture) {
-        UUID driverUuid = UUID.fromString(driverId);
-        return ResponseEntity.ok(driverService.changeProfilePicture(driverUuid, picture));
+    public ResponseEntity<DriverResponse> changeProfileImage(@PathVariable UUID driverId, @RequestPart("picture") MultipartFile picture) {
+        return ResponseEntity.ok(driverService.changeProfilePicture(driverId, picture));
     }
 
     @GetMapping("/{driverId}/profile/picture")
-    public ResponseEntity<Resource> getProfileImage(@PathVariable String driverId) throws IOException {
-        UUID driverUuid = UUID.fromString(driverId);
-        Resource resource = driverService.getProfilePicture(driverUuid);
+    public ResponseEntity<Resource> getProfileImage(@PathVariable UUID driverId) {
+        Resource resource = driverService.getProfilePicture(driverId);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg");
         return ResponseEntity.ok()

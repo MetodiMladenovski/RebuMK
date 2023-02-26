@@ -20,16 +20,14 @@ public class CarController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/add/{driverId}")
-    public ResponseEntity<Car> addCarForDriver(@RequestBody CarRequest carRequest, @PathVariable String driverId) {
-        UUID driverUUID = UUID.fromString(driverId);
-        Car savedCar = carService.addCarForDriver(carRequest, driverUUID);
+    public ResponseEntity<Car> addCarForDriver(@RequestBody CarRequest carRequest, @PathVariable UUID driverId) {
+        Car savedCar = carService.addCarForDriver(carRequest, driverId);
         return ResponseEntity.ok(savedCar);
     }
 
     @GetMapping("/driver/{driverId}")
-    public ResponseEntity<CarResponse> getCarForDriver(@PathVariable String driverId){
-        UUID driverUuid = UUID.fromString(driverId);
-        Car car = carService.findCarByDriverId(driverUuid);
+    public ResponseEntity<CarResponse> getCarForDriver(@PathVariable UUID driverId){
+        Car car = carService.findCarByDriverId(driverId);
         return ResponseEntity.ok(modelMapper.map(car, CarResponse.class));
     }
 }

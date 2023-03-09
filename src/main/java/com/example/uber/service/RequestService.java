@@ -15,7 +15,7 @@ public interface RequestService {
 
     RequestDriveResponse confirmRequest(UUID driverId, UUID requestToConfirmId);
 
-    Request findById(UUID requestId);
+    Request getById(UUID requestId);
 
     RequestDriveResponse getRequestById(UUID requestUuid);
 

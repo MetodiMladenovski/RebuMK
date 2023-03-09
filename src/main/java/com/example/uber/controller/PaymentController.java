@@ -4,12 +4,10 @@ import com.example.uber.model.response.PaymentResponse;
 import com.example.uber.service.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/payment")
@@ -20,6 +18,11 @@ public class PaymentController {
 
     @GetMapping
     public ResponseEntity<List<PaymentResponse>> getAllPayments(){
-        return ResponseEntity.ok(paymentService.findAllPayments());
+        return ResponseEntity.ok(paymentService.getAllPayment());
+    }
+
+    @PostMapping("/{paymentId}/tip")
+    public ResponseEntity<Boolean> tipDriver(@PathVariable UUID paymentId, @RequestParam float driverTipSum){
+        return ResponseEntity.ok(paymentService.addDriverTipForPayment(paymentId, driverTipSum));
     }
 }

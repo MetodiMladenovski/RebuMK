@@ -14,7 +14,7 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
 
     @Override
-    public Passenger findById(UUID passengerId) {
+    public Passenger getById(UUID passengerId) {
         return passengerRepository.findById(passengerId).orElseThrow(IllegalAccessError::new);
     }
 }

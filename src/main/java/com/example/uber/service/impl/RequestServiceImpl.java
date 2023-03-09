@@ -30,7 +30,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public RequestDriveResponse makeRequestForAllDrivers(UUID passengerId, RequestDriveRequest request) {
-        Passenger passenger = passengerService.findById(passengerId);
+        Passenger passenger = passengerService.getById(passengerId);
         Request requestDrive = modelMapper.map(request, Request.class).withStatus(RequestStatus.CREATED).withPassenger(passenger);
         Request savedRequest = requestRepository.save(requestDrive);
         return modelMapper.map(savedRequest, RequestDriveResponse.class);
@@ -38,8 +38,8 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public RequestDriveResponse makeRequestForSpecificDriver(UUID passengerId, UUID chosenDriverId, RequestDriveRequest request) {
-        Passenger passenger = passengerService.findById(passengerId);
-        Driver chosenDriver = driverService.findDriverById(chosenDriverId);
+        Passenger passenger = passengerService.getById(passengerId);
+        Driver chosenDriver = driverService.getDriverById(chosenDriverId);
         Request requestDrive = modelMapper.map(request, Request.class)
                 .withPassenger(passenger)
                 .withChosenDriver(chosenDriver)
@@ -61,7 +61,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public RequestDriveResponse confirmRequest(UUID driverId, UUID requestToConfirmId) {
         Request request = requestRepository.findById(requestToConfirmId).orElseThrow(IllegalAccessError::new);
-        Driver driver = driverService.findDriverById(driverId);
+        Driver driver = driverService.getDriverById(driverId);
         Request savedRequest = requestRepository.save(request.withStatus(RequestStatus.CONFIRMED).withConfirmedByDriver(driver));
         driverService.changeStatusForDriver(driverId, DriverStatus.BUSY);
         RequestDriveResponse requestDriveResponse = modelMapper.map(savedRequest, RequestDriveResponse.class);
@@ -70,18 +70,18 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public RequestDriveResponse getRequestById(UUID requestUuid) {
-        Request request = findById(requestUuid);
+        Request request = getById(requestUuid);
         return modelMapper.map(request, RequestDriveResponse.class);
     }
 
     @Override
     public void updateStatus(UUID requestId, RequestStatus status) {
-        Request request = findById(requestId);
+        Request request = getById(requestId);
         requestRepository.save(request.withStatus(status));
     }
 
     @Override
-    public Request findById(UUID requestId) {
+    public Request getById(UUID requestId) {
         return requestRepository.findById(requestId).orElseThrow(IllegalAccessError::new);
     }
 

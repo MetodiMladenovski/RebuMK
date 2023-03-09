@@ -13,13 +13,13 @@ public interface DriveService {
 
     Boolean finishDrive(UUID driveId, float kmTravelled);
 
-    Drive findById(UUID driveId);
+    Drive getById(UUID driveId);
 
     DriveResponse getDriveByRequestId(UUID requestUuid);
 
     DriveResponse gradeDrive(UUID driveUuid, float grade);
 
-    Boolean payDrive(UUID driveUuid, float totalPriceToPay);
+    UUID payDrive(UUID driveUuid, float totalPriceToPay);
 
     List<Drive> getAllDrivesByDriverId(UUID driverId);
 }

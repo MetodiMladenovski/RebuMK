@@ -9,13 +9,11 @@ import com.example.uber.service.DriverService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,7 +25,7 @@ public class DriverServiceImpl implements DriverService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Driver findDriverById(UUID driverId) {
+    public Driver getDriverById(UUID driverId) {
         return driverRepository.findById(driverId).orElseThrow(IllegalAccessError::new);
     }
 
@@ -40,7 +38,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Boolean approveAccount(UUID driverId) {
-        Driver driver = findDriverById(driverId).withApproved(true);
+        Driver driver = getDriverById(driverId).withApproved(true);
         driverRepository.save(driver);
         return true;
     }
@@ -57,7 +55,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public void updateGradeForDriver(UUID driverId, float grade, List<Drive> drives) {
-        Driver driver = findDriverById(driverId);
+        Driver driver = getDriverById(driverId);
         List<Float> gradesForDriver = drives.stream().map(Drive::getGrade).collect(Collectors.toList());
         driver.updateGrade(gradesForDriver, grade);
         driverRepository.save(driver);
@@ -65,7 +63,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverResponse changeProfilePicture(UUID driverUuid, MultipartFile picture) {
-        Driver driver = findDriverById(driverUuid);
+        Driver driver = getDriverById(driverUuid);
         try {
             Driver driverWithPicture = driver.withProfilePicture(picture.getBytes());
             driverRepository.save(driverWithPicture);
@@ -77,7 +75,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Resource getProfilePicture(UUID driverId) {
-        Driver driver = findDriverById(driverId);
+        Driver driver = getDriverById(driverId);
         if(driver.getProfilePicture()==null){
             throw new IllegalArgumentException();
         }

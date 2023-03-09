@@ -38,8 +38,8 @@ public class DriveController {
         return ResponseEntity.ok(driveResponse);
     }
     @PostMapping("/pay/{driveId}")
-    public ResponseEntity<Boolean> payDrive(@PathVariable UUID driveId, @RequestParam float totalPriceToPay) {
-        Boolean driveResponse = driveService.payDrive(driveId, totalPriceToPay);
+    public ResponseEntity<UUID> payDrive(@PathVariable UUID driveId, @RequestParam float totalPriceToPay) {
+        UUID driveResponse = driveService.payDrive(driveId, totalPriceToPay);
         return ResponseEntity.ok(driveResponse);
     }
 }

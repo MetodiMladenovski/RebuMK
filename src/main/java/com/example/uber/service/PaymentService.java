@@ -5,9 +5,12 @@ import com.example.uber.model.Passenger;
 import com.example.uber.model.response.PaymentResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PaymentService {
-    void addPayment(Drive drive, Passenger passenger, float totalSumPayed);
+    PaymentResponse addPayment(Drive drive, Passenger passenger, float totalSumPayed);
 
-    List<PaymentResponse> findAllPayments();
+    List<PaymentResponse> getAllPayment();
+
+    Boolean addDriverTipForPayment(UUID paymentId, float driverTipSum);
 }

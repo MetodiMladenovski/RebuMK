@@ -22,18 +22,18 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car addCarForDriver(CarRequest carRequest, UUID driverId) {
         Car car = modelMapper.map(carRequest, Car.class);
-        Driver driver = driverService.findDriverById(driverId);
+        Driver driver = driverService.getDriverById(driverId);
         Car carWithAddedDriver = car.withDriver(driver);
         return carRepository.save(carWithAddedDriver);
     }
 
     @Override
-    public Car findCarByDriverId(UUID driverId) {
+    public Car getCarByDriverId(UUID driverId) {
         return carRepository.findByDriverId(driverId).orElseThrow(IllegalAccessError::new);
     }
 
     @Override
-    public Car findCarById(UUID carId) {
+    public Car getCarById(UUID carId) {
         return carRepository.findById(carId).orElseThrow(IllegalAccessError::new);
     }
 }

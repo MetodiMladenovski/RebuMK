@@ -3,6 +3,7 @@ package com.example.uber.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.With;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -21,6 +22,10 @@ public class Payment {
 
     @Column(name = "total_sum_payed")
     private float totalSumPayed;
+
+    @Column(name = "driver_tip")
+    @With
+    private float driverTip;
 
     @ManyToOne
     @JoinColumn(name = "drive_id", nullable = false)

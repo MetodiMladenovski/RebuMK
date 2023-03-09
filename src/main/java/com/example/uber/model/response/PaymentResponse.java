@@ -18,4 +18,5 @@ public class PaymentResponse {
     private float totalSumPayed;
     private Drive drive;
     private Passenger passenger;
+    private float driverTip;
 }

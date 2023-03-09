@@ -6,6 +6,7 @@ import com.example.uber.model.enums.DriverStatus;
 import com.example.uber.model.enums.RequestStatus;
 import com.example.uber.model.request.DriveRequest;
 import com.example.uber.model.response.DriveResponse;
+import com.example.uber.model.response.PaymentResponse;
 import com.example.uber.repository.DriveRepository;
 import com.example.uber.service.*;
 import lombok.AllArgsConstructor;
@@ -30,9 +31,9 @@ public class DriveServiceImpl implements DriveService {
 
     @Override
     public DriveResponse startDrive(UUID requestUuid, UUID driverUuid, DriveRequest driveRequest) {
-        Car car = carService.findCarByDriverId(driverUuid);
-        Driver driver = driverService.findDriverById(driverUuid);
-        Request request = requestService.findById(requestUuid);
+        Car car = carService.getCarByDriverId(driverUuid);
+        Driver driver = driverService.getDriverById(driverUuid);
+        Request request = requestService.getById(requestUuid);
         if(driveRepository.existsByRequestId(requestUuid)){
             throw new IllegalArgumentException();
         }
@@ -43,7 +44,7 @@ public class DriveServiceImpl implements DriveService {
 
     @Override
     public Boolean finishDrive(UUID driveId, float kmTravelled) {
-        Drive drive = findById(driveId);
+        Drive drive = getById(driveId);
         requestService.updateStatus(drive.getRequest().getId(), RequestStatus.FINISHED);
         driverService.changeStatusForDriver(drive.getDriver().getId(), DriverStatus.AVAILABLE);
         driveRepository.save(drive.withStatus(DriveStatus.FINISHED).withKmTravelled(kmTravelled));
@@ -51,7 +52,7 @@ public class DriveServiceImpl implements DriveService {
     }
 
     @Override
-    public Drive findById(UUID driveId) {
+    public Drive getById(UUID driveId) {
         return driveRepository.findById(driveId).orElseThrow(IllegalAccessError::new);
     }
 
@@ -68,7 +69,7 @@ public class DriveServiceImpl implements DriveService {
 
     @Override
     public DriveResponse gradeDrive(UUID driveUuid, float grade) {
-        Drive drive = findById(driveUuid);
+        Drive drive = getById(driveUuid);
         Drive gradedDrive = drive.withGrade(grade);
         List<Drive> drivesForDriver = getAllDrivesByDriverId(drive.getDriver().getId())
                 .stream()
@@ -80,12 +81,12 @@ public class DriveServiceImpl implements DriveService {
     }
 
     @Override
-    public Boolean payDrive(UUID driveUuid, float totalPriceToPay) {
-        Drive drive = findById(driveUuid);
+    public UUID payDrive(UUID driveUuid, float totalPriceToPay) {
+        Drive drive = getById(driveUuid);
         UUID passengerId = drive.getRequest().getPassenger().getId();
-        Passenger passenger = passengerService.findById(passengerId);
+        Passenger passenger = passengerService.getById(passengerId);
         driveRepository.save(drive.withStatus(DriveStatus.PAYED));
-        paymentService.addPayment(drive, passenger, totalPriceToPay);
-        return true;
+        PaymentResponse savedPayment = paymentService.addPayment(drive, passenger, totalPriceToPay);
+        return savedPayment.getId();
     }
 }

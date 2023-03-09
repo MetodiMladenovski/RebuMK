@@ -27,7 +27,7 @@ public class CarController {
 
     @GetMapping("/driver/{driverId}")
     public ResponseEntity<CarResponse> getCarForDriver(@PathVariable UUID driverId){
-        Car car = carService.findCarByDriverId(driverId);
+        Car car = carService.getCarByDriverId(driverId);
         return ResponseEntity.ok(modelMapper.map(car, CarResponse.class));
     }
 }

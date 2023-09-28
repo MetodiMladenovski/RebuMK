@@ -1,0 +1,36 @@
+version: '3'
+services:
+  rebu-be:
+    depends_on:
+      - rebudb
+    image: image-rebu-be
+    container_name: rebu-be
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://rebudb:5432/rebu-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mete5
+
+  rebudb:
+    image: 'postgres:14.1-alpine'
+    container_name: rebudb
+    ports:
+      - "5432:5432"
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=mete5
+      - POSTGRES_DB=rebu-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

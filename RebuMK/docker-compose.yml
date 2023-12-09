@@ -1,27 +1,36 @@
-version: '3.8'
-
+version: '3'
 services:
-  rebumkdb:
-    image: postgres:latest
-    container_name: rebudb
-    environment:
-      POSTGRES_DB: rebudb
-      POSTGRES_USER: meto
-      POSTGRES_PASSWORD: mete5
-    ports:
-      - "5321:5321"
-
-  rebumk-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: rebumkapp
+  rebu-be:
+    depends_on:
+      - rebudb
+    image: image-rebu-be
+    container_name: rebu-be
+    build: .
+    restart: always
     ports:
       - "8080:8080"
-    depends_on:
-      - rebumkdb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://rebumkdb:5432/rebudb
-      SPRING_DATASOURCE_USERNAME: meto
+      SPRING_DATASOURCE_URL: jdbc:postgresql://rebudb:5432/rebu-db
+      SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mete5
 
+  rebudb:
+    image: 'postgres:14.1-alpine'
+    container_name: rebudb
+    ports:
+      - "5432:5432"
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=mete5
+      - POSTGRES_DB=rebu-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
